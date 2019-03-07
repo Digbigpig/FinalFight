@@ -1,4 +1,5 @@
 from discord.ext import commands
+from discord.utils import get
 from cogs.utils import perms, inserts, querys, exceptions
 from cogs.utils.classes.weapon.weapons import weapon_dict
 import traceback, sys, settings, random, discord
@@ -126,6 +127,10 @@ class DeathMatch:
 
     @commands.command(name="test_embed", pass_context=True)
     async def test_embed(self, ctx):
+        hp_left = get(ctx.message.server.emojis, name="HPGREENLEFT")
+        hp_mid = get(ctx.message.server.emojis, name="HPGREENMID")
+        hp_right = get(ctx.message.server.emojis, name="HPGREENRIGHT")
+
         embed = discord.Embed(title="Digbigpig Whipped Broken", description="Broken took 45 damage!", type='rich', color=0x00ff00)
         embed.set_thumbnail(url=ctx.message.author.avatar_url)
         embed.add_field(name='Broken', value='\u200b', inline=False)
@@ -133,7 +138,7 @@ class DeathMatch:
         embed.add_field(name='SpecialAttack', value='100', inline=True)
         embed.add_field(name='\u200b', value='\u200b', inline=False)
         embed.add_field(name='Digbigpig', value='\u200b', inline=False)
-        embed.add_field(name='HP', value='99 ░░░░░░░░░░░░░░░░░░░░', inline=True)
+        embed.add_field(name='HP', value=f'99 {hp_left}{hp_mid}{hp_mid}{hp_mid}{hp_mid}{hp_mid}{hp_mid}{hp_right}', inline=True)
         embed.add_field(name='Special', value='100', inline=True)
 
         await self.bot.say(f"`Digbigpig dealt 45 damage to Broken.` ")

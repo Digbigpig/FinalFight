@@ -1,3 +1,4 @@
+import os, sys, inspect
 from cogs.utils.models.base import Session, engine, Base
 # from ..models.channel import Channel
 # from ..models.server import Server

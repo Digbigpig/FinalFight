@@ -4,6 +4,6 @@ from sqlalchemy.orm import sessionmaker
 
 import settings
 
-engine = create_engine(f'postgresql://postgres:{settings.DB_PASS}@localhost:5432/{settings.DB_NAME}')
+engine = create_engine(f'postgresql://{settings.DB_USER}:{settings.DB_PASS}@{settings.DB_ENDPOINT}:5432/{settings.DB_NAME}')
 Session = sessionmaker(bind=engine)
 Base = declarative_base()

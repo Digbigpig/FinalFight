@@ -1,4 +1,4 @@
-from sqlalchemy.sql import exists, func
+from sqlalchemy.sql import exists, func, text
 
 from cogs.utils.models.base import Session
 from cogs.utils.models.channel import Channel
@@ -285,7 +285,7 @@ def get_global_hiscores():
     h = session.query(HiscoresReport.winner_id, User.name, func.sum(HiscoresReport.count).label('wins')) \
         .filter(User.id == HiscoresReport.winner_id) \
         .group_by(HiscoresReport.winner_id, User.name) \
-        .order_by('wins DESC') \
+        .order_by(text('wins DESC')) \
         .limit(10) \
         .all()
     session.close()
@@ -299,7 +299,7 @@ def get_server_hiscores(server_id):
         .filter(HiscoresReport.winner_id == User.id) \
         .filter(HiscoresReport.server_id == server_id) \
         .group_by(HiscoresReport.winner_id, User.name, HiscoresReport.server_id) \
-        .order_by('wins DESC') \
+        .order_by(text('wins DESC')) \
         .limit(10) \
         .all()
     session.close()

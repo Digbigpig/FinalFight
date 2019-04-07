@@ -431,7 +431,7 @@ class DeathMatch:
         print('Ignoring exception in command {}:'.format(ctx.command), file=sys.stderr)
         traceback.print_exception(type(error), error, error.__traceback__, file=sys.stderr)
 
-    @commands.command(name="hiscores", pass_context=True)
+    @commands.command(name="hiscores", pass_context=True, aliases=['highscores', 'hs'])
     @perms.check_integrity(data="user", needs_to_exist=True, )
     @perms.check_guild_only()
     async def hiscores(self, ctx):

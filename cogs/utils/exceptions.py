@@ -56,3 +56,9 @@ class PlayerFrozen(GameIntegrity):
     """
     todo
     """
+
+
+class UnownedWeapon(GameIntegrity):
+    """
+    todo
+    """

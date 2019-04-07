@@ -1,7 +1,11 @@
+import sys
+import traceback
+
 from discord.ext import commands
+
+import settings
+from cogs.utils import inserts, exceptions
 from cogs.utils import perms
-from cogs.utils import inserts, querys, exceptions
-import settings, traceback, sys
 
 
 class Common:
@@ -19,6 +23,10 @@ class Common:
     @perms.mod_or_permissions(administrator=True)
     @perms.check_integrity(data="channel", needs_to_exist=False)
     async def register_channel(self, ctx):
+        """
+        Use this command to allow the bot to use the current channel for hosting fights.
+        This is necessary to for bot functionality.
+        """
 
         channel = ctx.message.channel
         server = ctx.message.server
@@ -28,9 +36,12 @@ class Common:
 
     @commands.command(name="unregister_channel", pass_context=True)
     @perms.check_guild_only()
-    @perms.mod_or_permissions()
+    @perms.mod_or_permissions(administrator=True)
     @perms.check_integrity(data="channel", needs_to_exist=True)
     async def unregister_channel(self, ctx):
+        """
+        Unregisters the channel, preventing the bot from using the current channel for fights.
+        """
 
         channel = ctx.message.channel
         server = ctx.message.server
@@ -65,8 +76,12 @@ class Common:
     @commands.command(name='authorize', pass_context=True)
     @perms.check_guild_only()
     @perms.check_integrity(data="role", needs_to_exist=False)
-    @perms.mod_or_permissions()
+    @perms.mod_or_permissions(administrator=True)
     async def authorize(self, ctx):
+        f"""
+        Authorize a role manage the bot and its matches. Example: {settings.PREFIX}authorize @Mods
+        It is recommended to authorize a role to manage the bot. Owners and administrators are authorized by default.
+        """
 
         roles = ctx.message.role_mentions
         inserts.create_roles(ctx.message.server, roles[0])
@@ -96,6 +111,10 @@ class Common:
             return await self.bot.say(
                 f'You must have an authorized Role or be a mod to authorize other Roles.\n' +
                 f'Mods can use {settings.PREFIX}authorize @Role to give DeathMatch management permissions to a Role.')
+
+        if isinstance(error, commands.UserInputError):
+            return await self.bot.say(
+                "You need to mention a role to authorize. Some roles might need to allow mentioning.")
 
         if isinstance(error, commands.NoPrivateMessage):
             return await self.bot.say("You cannot use this command in a direct message.")

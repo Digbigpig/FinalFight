@@ -3,21 +3,29 @@ from cogs.utils.models.base import Session, engine, Base
 # from ..models.server import Server
 # from ..models.user import User
 # from ..models.player import Player
-from cogs.utils.models.role import Role
 # from ..models.match import Match
 # from ..models.item_inventory import ItemInventory
 # from ..models.item import Item
 # from ..models.hiscores_report import HiscoresReport
-from cogs.utils.querys import server
+
 # 2 - generate database schema
 Base.metadata.create_all(engine)
 
+
+def rebuild_db():
+    Base.metadata.drop_all(engine)
+    Base.metadata.create_all(engine)
+
+
+if __name__ == '__main__':
+    rebuild_db()
+
 # 3 - create a new session
 session = Session()
-s = server('376168624983113728').first()
-r = Role("testid", "TestRole", s)
+# s = Server('376168624983113728')
+# r = Role("testid", "TestRole", s)
 
-session.add(r)
+# session.add(r)
 session.commit()
 session.close()
 # # 4 - create server

@@ -1,6 +1,10 @@
 import discord
+
 import settings
 from cogs.utils import querys, inserts
+from cogs.utils.classes.weapon.weapons import weapon_dict
+
+weapons = weapon_dict.keys()
 
 
 class Event:
@@ -17,6 +21,19 @@ class Event:
         print('ID: ' + self.bot.user.id)
         print(f'Connected to {str(len(self.bot.servers))} servers | {str(len(set(self.bot.get_all_members())))} users.')
         print('------')
+
+        # Add any servers that arent in the database.
+        for server in self.bot.servers:
+            if not querys.server_exists(server.id):
+                inserts.create_server(server.id, server.name)
+                print(f"Adding Server {server.name} to database.")
+
+        # Add any buyable items that arent in the database.
+        for weapon in weapons:
+            if not weapon_dict[weapon]['standard_weapon']:
+                if not querys.item_exists(weapon):
+                    print(f"Adding Item {weapon} to database.")
+                    inserts.create_item(weapon, weapon_dict[weapon]['description'], weapon_dict[weapon]['cost'])
 
     async def on_server_join(self, server):
         # If the server is not in the database, add them to the database.

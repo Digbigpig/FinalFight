@@ -1,6 +1,7 @@
 from sqlalchemy import Column, String, Integer, ForeignKey, Boolean, DateTime
 from sqlalchemy.orm import relationship, backref
 from sqlalchemy.sql import func
+
 from .base import Base
 
 
@@ -13,6 +14,7 @@ class Match(Base):
 
     wait = Column(Boolean, default=False)
     rules = Column(String)
+    stake = Column(Integer, default=0)
     start_time = Column(DateTime(timezone=True), server_default=func.now())
     last_play = Column(DateTime(timezone=True), onupdate=func.now(), server_default=func.now())
     turn = Column(Integer, default=0)

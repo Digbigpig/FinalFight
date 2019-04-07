@@ -1,7 +1,8 @@
 from sqlalchemy import Column, String, Integer
 from sqlalchemy.orm import relationship
-from .item_inventory import ItemInventory
+
 from .base import Base
+from .item_inventory import ItemInventory
 
 
 class Item(Base):
@@ -10,8 +11,10 @@ class Item(Base):
     id = Column(Integer, primary_key=True, autoincrement=True)
     name = Column(String)
     description = Column(String)
+    price = Column(Integer)
     users = relationship('ItemInventory', backref='item', primaryjoin=id == ItemInventory.item_id)
 
-    def __init__(self, name, description):
+    def __init__(self, name, description, price):
         self.name = name
         self.description = description
+        self.price = price
